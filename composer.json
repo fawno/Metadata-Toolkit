@@ -18,6 +18,10 @@
     "suggest": {
         "ext-mbstring": "*"
     },
+    "replace": {
+        "fawno/simpleiptc": "*",
+        "fawno/simplesccu": "*"
+    },
     "autoload": {
         "psr-4": {
             "Fawno\\MetadataToolkit\\": "src"
