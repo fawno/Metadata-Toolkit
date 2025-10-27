@@ -1,0 +1,12 @@
+<?php
+	declare(strict_types=1);
+
+	namespace Fawno\MetadataToolkit\Format\JPEG\Segment;
+
+	use Fawno\MetadataToolkit\Format\JPEG\JPEGSegments;
+
+	class JPEGSegmentJPG0 extends JPEGSegmentJPG {
+		public const NAME = 'JPG0';
+		public const DESCRIPTION = 'Reserved for JPEG extensions (JPG0)';
+		public const MARKER = JPEGSegments::JPG0;
+	}
