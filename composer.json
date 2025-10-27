@@ -12,7 +12,11 @@
         }
     ],
     "require": {
-        "php": ">=8.1.0"
+        "php": ">=8.1.0",
+        "ext-dom": "*"
+    },
+    "suggest": {
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {
