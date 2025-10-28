@@ -3,8 +3,8 @@
 
 	namespace Fawno\MetadataToolkit\Tests\Metadata;
 
-use Fawno\MetadataToolkit\Metadata\IPTC;
-use Fawno\MetadataToolkit\Metadata\SCCU;
+	use Fawno\MetadataToolkit\Metadata\IPTC;
+	use Fawno\MetadataToolkit\Metadata\SCCU;
 	use Fawno\MetadataToolkit\Metadata\SCCU\SCCUType;
 	use Fawno\MetadataToolkit\Metadata\SCCU\Tag\SCCUTag;
 	use Fawno\MetadataToolkit\Tests\TestCase;
