@@ -4,6 +4,7 @@
 	namespace Fawno\MetadataToolkit\Metadata;
 
 	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTag;
+	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagCustomDataSCCU;
 
 	class IPTC {
 		protected const MARKER = '8BIM';
@@ -79,6 +80,27 @@
 				if ($tag::NAME == $name) {
 					return $tag;
 				}
+			}
+
+			return null;
+		}
+
+		protected function addSCCU (?SCCU $sccu = null) : SCCU {
+			$tag = IPTCTagCustomDataSCCU::create($sccu ?? SCCU::create());
+			$this->tags[] = $tag;
+
+			return $tag->get();
+		}
+
+		public function getSCCU (bool $create = false) : ?SCCU {
+			foreach ($this->tags as $tag) {
+				if ($tag instanceof IPTCTagCustomDataSCCU) {
+					return $tag->get();
+				}
+			}
+
+			if ($create) {
+				return $this->addSCCU();
 			}
 
 			return null;

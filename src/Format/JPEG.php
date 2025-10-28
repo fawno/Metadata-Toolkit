@@ -136,8 +136,8 @@
 			return $segment->getIPTC();
 		}
 
-		public function getSCCU () : ?SCCU {
-			return $this->getIPTC()?->get(IPTCTagCustomDataSCCU::NAME)?->get();
+		public function getSCCU (bool $create = false) : ?SCCU {
+			return $this->getIPTC($create)->getSCCU($create);
 		}
 
 		public function getIPTC (bool $create = false) : ?IPTC {
