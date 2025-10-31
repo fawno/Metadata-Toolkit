@@ -4,20 +4,22 @@
 	namespace Fawno\MetadataToolkit\Tests\Metadata;
 
 	use Fawno\MetadataToolkit\Metadata\IPTC;
+	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 	use Fawno\MetadataToolkit\Metadata\SCCU;
 	use Fawno\MetadataToolkit\Metadata\SCCU\SCCUType;
 	use Fawno\MetadataToolkit\Metadata\SCCU\Tag\SCCUTag;
 	use Fawno\MetadataToolkit\Tests\TestCase;
 
-	class IPTCTest extends TestCase {
+	class IRBTagIPTCDataTest extends TestCase {
 		public function test_create () {
-			$iptc = IPTC::create();
+			$iptc = IRBTagIPTCData::create();
 			$this->assertInstanceOf(IPTC::class, $iptc);
-			$this->assertEquals('', $iptc->__toString());
+			$this->assertInstanceOf(IRBTagIPTCData::class, $iptc);
+			$this->assertStringEqualsBase64('OEJJTQQEAAAAAAAA', $iptc->__toString());
 		}
 
 		public function test_sccu () {
-			$iptc = IPTC::create();
+			$iptc = IRBTagIPTCData::create();
 			$sccu = $iptc->getSCCU();
 			$this->assertNull($sccu);
 
@@ -36,6 +38,6 @@
 				SCCUTag::create('00000101', 'PubDate', SCCUType::DATE),
 			);
 			$this->assertStringEqualsFile(__DIR__ . '/examples/8B441E241B9E45DCBA90.sccu', $sccu->__toString());
-			$this->assertStringEqualsFile(__DIR__ . '/examples/8B441E241B9E45DCBA90.iptc', $iptc->__toString());
+			$this->assertStringEqualsFile(__DIR__ . '/examples/8B441E241B9E45DCBA90.iptc.irb', $iptc->__toString());
 		}
 	}

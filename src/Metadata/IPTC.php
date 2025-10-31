@@ -7,7 +7,6 @@
 	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagCustomDataSCCU;
 
 	class IPTC {
-		protected const MARKER = '8BIM';
 		protected const MAGIC = "\x1C";
 
 		/**
@@ -26,43 +25,37 @@
 		}
 
 		public static function decode (string $bin) : IPTC {
-			$tags = [];
-
-			if (preg_match('~^Photoshop \d\.\d\x00$~', substr($bin, 0, 14))) {
-				$bin = substr($bin, 14);
-			}
-
-			while (static::MARKER == substr($bin, 0, 4)) {
-				$app13 = unpack('a4bim/nid/n/Nlenght', $bin);
-
-				$iptc = substr($bin, 12, $app13['lenght']);
-
-				$bin = substr($bin, 12 + $app13['lenght']);
-
-				if ($app13['id'] != static::IRID) {
-					continue;
-				}
-
-				while (static::MAGIC == substr($iptc, 0, 1)) {
-					$length = 4;
-
-					$tag = unpack('Crecord/Cid/nlength', substr($iptc, 1, $length));
-
-					if ($tag['length'] == 0x8004) {
-						$length += 4;
-
-						$tag = unpack('Crecord/Cid/nlength/Nlength', substr($iptc, 1, $length));
-					}
-
-					$length += $tag['length'];
-
-					$tags[] = IPTCTag::decode(substr($iptc, 1, $length));
-
-					$iptc = substr($iptc, $length + 1);
-				}
-			}
+			$tags = static::decodeTags($bin);
 
 			return new static(...$tags);
+		}
+
+		/**
+		 * @param string $bin
+		 * @return array<IPTCTag>
+		 */
+		protected static function decodeTags (string $bin) : array {
+			$tags = [];
+
+			while (static::MAGIC == substr($bin, 0, 1)) {
+				$length = 4;
+
+				$tag = unpack('Crecord/Cid/nlength', substr($bin, 1, $length));
+
+				if ($tag['length'] == 0x8004) {
+					$length += 4;
+
+					$tag = unpack('Crecord/Cid/nlength/Nlength', substr($bin, 1, $length));
+				}
+
+				$length += $tag['length'];
+
+				$tags[] = IPTCTag::decode(substr($bin, 1, $length));
+
+				$bin = substr($bin, $length + 1);
+			}
+
+			return $tags;
 		}
 
 		public function set (IPTCTag ...$tags) : IPTC {
@@ -125,10 +118,7 @@
 		}
 
 		public function __toString () {
-			$data = implode('', $this->tags);
-			$bin = static::MARKER;
-			$bin .= pack('n2N', static::IRID, 0, strlen($data));
-			$bin .= $data;
+			$bin = implode('', $this->tags);
 
 			return $bin;
 		}
