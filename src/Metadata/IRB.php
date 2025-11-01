@@ -26,13 +26,22 @@
 			while (false !== $pos = strpos(substr($bin, 0, 5), static::MAGIC)) {
 				$bin = substr($bin, $pos);
 
-				$app13 = unpack('a4bim/nid/n/Nlenght', $bin);
+				extract(unpack('nirbid/Z*name', $bin, 4));
 
-				$tagClass = IRBTags::getTagClass($app13['id']);
+				// Calculate offset of lenght
+				$offset = 6 + (strlen($name) ?: 2);
+				$offset += $offset % 2;
 
-				$blocks[] = $tagClass::decode(substr($bin, 0, 12 + $app13['lenght']));
+				extract(unpack('Nlenght', $bin, $offset));
 
-				$bin = substr($bin, 12 + $app13['lenght']);
+				// Calculate lenght included IRB header
+				$lenght += $offset + 4;
+
+				$tagClass = IRBTags::getTagClass($irbid);
+
+				$blocks[] = $tagClass::decode(substr($bin, 0, $lenght));
+
+				$bin = substr($bin, $lenght);
 			}
 
 			return new static(...$blocks);

@@ -15,14 +15,23 @@
 				$bin = substr($bin, 14);
 			}
 
-			while (static::MARKER == substr($bin, 0, 4)) {
-				$app13 = unpack('a4bim/nid/n/Nlenght', $bin);
+			while (false !== $pos = strpos(substr($bin, 0, 5), static::MARKER)) {
+				$bin = substr($bin, $pos);
 
-				$iptc = substr($bin, 12, $app13['lenght']);
+				extract(unpack('nirbid/Z*name', $bin, 4));
 
-				$bin = substr($bin, 12 + $app13['lenght']);
+				// Calculate offset of lenght
+				$offset = 6 + (strlen($name) ?: 2);
+				$offset += $offset % 2;
 
-				if ($app13['id'] != static::IRID) {
+				extract(unpack('Nlenght', $bin, $offset));
+				$offset += 4;
+
+				$iptc = substr($bin, $offset, $lenght);
+
+				$bin = substr($bin, $offset + $lenght);
+
+				if ($irbid != static::IRID) {
 					continue;
 				}
 
