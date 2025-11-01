@@ -137,7 +137,7 @@
 		}
 
 		public function getSCCU (bool $create = false) : ?SCCU {
-			return $this->getIPTC($create)->getSCCU($create);
+			return $this->getIPTC($create)?->getSCCU($create);
 		}
 
 		public function getIPTC (bool $create = false) : ?IPTC {
