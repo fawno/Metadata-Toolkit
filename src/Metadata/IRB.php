@@ -23,7 +23,9 @@
 				$bin = substr($bin, 14);
 			}
 
-			while (static::MAGIC == substr($bin, 0, 4)) {
+			while (false !== $pos = strpos(substr($bin, 0, 5), static::MAGIC)) {
+				$bin = substr($bin, $pos);
+
 				$app13 = unpack('a4bim/nid/n/Nlenght', $bin);
 
 				$tagClass = IRBTags::getTagClass($app13['id']);
