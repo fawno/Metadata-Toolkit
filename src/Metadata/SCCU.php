@@ -23,6 +23,10 @@
 				return null;
 			}
 
+			if (20 > strlen($bin)) {
+				return new static();
+			}
+
 			extract(unpack('Nlength/nver/x6/Ncount', $bin, 4));
 
 			if ($length > strlen($bin)) {
