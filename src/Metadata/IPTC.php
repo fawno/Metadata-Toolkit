@@ -3,8 +3,10 @@
 
 	namespace Fawno\MetadataToolkit\Metadata;
 
+	use Exception;
 	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTag;
 	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagCustomDataSCCU;
+	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 
 	class IPTC {
 		protected const MAGIC = "\x1C";
@@ -22,6 +24,46 @@
 
 		public static function create (IPTCTag ...$tags) : IPTC {
 			return new static(...$tags);
+		}
+
+		public static function readImageBlob (string $blob) : ?static {
+			if (false === getimagesizefromstring($blob, $info)) {
+				throw new Exception('Error reading blob', 1);
+			}
+
+			if (empty($info['APP13'])) {
+				return null;
+			}
+
+			$iptc = IRBTagIPTCData::decode($info['APP13']);
+
+			if (empty($iptc->get())) {
+				return null;
+			}
+
+			return static::create($iptc->get());
+		}
+
+		public static function readImage (string $filename) : ?static {
+			if (!is_file($filename)) {
+				throw new Exception('Not a file', 1);
+			}
+
+			if (false === getimagesize($filename, $info)) {
+				throw new Exception('Error reading file', 2);
+			}
+
+			if (empty($info['APP13'])) {
+				return null;
+			}
+
+			$iptc = IRBTagIPTCData::decode($info['APP13']);
+
+			if (empty($iptc->get())) {
+				return null;
+			}
+
+			return static::create($iptc->get());
 		}
 
 		public static function decode (string $bin) : IPTC {
@@ -64,6 +106,10 @@
 			return $this;
 		}
 
+		/**
+		 * @param null|string $name
+		 * @return null|array<IPTCTag>|IPTCTag
+		 */
 		public function get (?string $name = null) : null|array|IPTCTag {
 			if (!$name) {
 				return $this->tags;
