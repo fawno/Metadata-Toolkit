@@ -162,10 +162,6 @@
 			return $this->dom->formatOutput;
 		}
 
-		public static function fromFile (string $fileName) : XMP {
-			return new self(file_get_contents($fileName));
-    }
-
 		protected function getNode (string $field, $ns, bool $checkAttributes = true) : ?DOMNode {
 			$query = ($checkAttributes) ? $field . '|@' . $field : $field;
 
