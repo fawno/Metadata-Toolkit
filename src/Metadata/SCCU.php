@@ -59,6 +59,10 @@
 			return null;
 		}
 
+		/**
+		 * @param null|string $name
+		 * @return null|array<SSCUTag>|SCCUTag
+		 */
 		public function get (?string $name = null) : null|array|SCCUTag {
 			if (!$name) {
 				return $this->tags;

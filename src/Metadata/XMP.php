@@ -9,6 +9,7 @@
 	use DOMNamedNodeMap;
 	use DOMNode;
 	use DOMXPath;
+	use Exception;
 	use RuntimeException;
 
 	class XMP {
@@ -64,6 +65,39 @@
 
 		public static function create (?string $data = null, bool $format = false) : XMP {
 			return new static($data, $format);
+		}
+
+		/**
+		 * Reads XMP from a binary string
+		 *
+		 * @param string $blob Binary string
+		 * @return null|XMP
+		 */
+		public static function readBlob (string $blob) : ?XMP {
+			if (!preg_match('~<x:xmpmeta.*</x:xmpmeta>~Uims', $blob, $xmps)) {
+				return null;
+			}
+
+			return static::create(current($xmps));
+		}
+
+		/**
+		 * Reads XMP from filename
+		 *
+		 * @param string $filename
+		 * @return null|XMP
+		 * @throws Exception
+		 */
+		public static function readFile (string $filename) : ?XMP {
+			if (!is_file($filename)) {
+				throw new Exception('Not a file', 1);
+			}
+
+			if (false === $blob = file_get_contents($filename)) {
+				throw new Exception('Error reading file', 2);
+			}
+
+			return static::readBlob($blob);
 		}
 
 		public function __toString () : string {
