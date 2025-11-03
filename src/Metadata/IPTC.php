@@ -41,7 +41,7 @@
 				return null;
 			}
 
-			return static::create($iptc->get());
+			return static::create(...$iptc->get());
 		}
 
 		public static function readImage (string $filename) : ?static {
@@ -63,7 +63,7 @@
 				return null;
 			}
 
-			return static::create($iptc->get());
+			return static::create(...$iptc->get());
 		}
 
 		public static function decode (string $bin) : IPTC {
