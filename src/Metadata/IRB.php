@@ -5,6 +5,7 @@
 
 	use Fawno\MetadataToolkit\Metadata\IRB\IRBTags;
 	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTag;
+	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 
 	class IRB {
 		public const MARKER = "Photoshop 3.0\x00";
@@ -12,7 +13,7 @@
 
 		protected array $blocks = [];
 
-		protected function __construct (null|IPTC|IRBTag ...$blocks) {
+		protected function __construct (null|IRBTagIPTCData|IRBTag ...$blocks) {
 			$this->blocks = $blocks;
 		}
 
@@ -47,7 +48,7 @@
 			return new static(...$blocks);
 		}
 
-		public static function create (null|IPTC|IRBTag ...$blocks) : IRB {
+		public static function create (null|IRBTagIPTCData|IRBTag ...$blocks) : IRB {
 			return new static(...$blocks);
 		}
 

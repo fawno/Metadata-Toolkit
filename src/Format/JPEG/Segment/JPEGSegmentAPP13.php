@@ -7,6 +7,7 @@
 	use Fawno\MetadataToolkit\Metadata\IRB;
 	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTag;
 	use Fawno\MetadataToolkit\Format\JPEG\JPEGSegments;
+	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 
 	class JPEGSegmentAPP13 extends JPEGSegmentAPP {
 		public const NAME = 'APP13';
@@ -19,7 +20,7 @@
 			$this->irb = IRB::decode(substr($bin, 4));
 		}
 
-		public static function create (null|IPTC|IRBTag ...$blocks) : JPEGSegmentAPP13 {
+		public static function create (null|IRBTagIPTCData|IRBTag ...$blocks) : JPEGSegmentAPP13 {
 			$bin = self::MARKER;
 			$data = IRB::create(...$blocks)->__toString();
 			$bin .= pack('n', strlen($data) + 2);

@@ -4,7 +4,6 @@
 	namespace Fawno\MetadataToolkit\Format;
 
 	use Exception;
-	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagCustomDataSCCU;
 	use Fawno\MetadataToolkit\Format\JPEG\JPEGSegments;
 	use Fawno\MetadataToolkit\Format\JPEG\Segment\JPEGSegmentAPP;
 	use Fawno\MetadataToolkit\Format\JPEG\Segment\JPEGSegmentAPP0;
@@ -15,6 +14,12 @@
 	use Fawno\MetadataToolkit\Format\JPEG\Segment\JPEGSegmentMetadata;
 	use Fawno\MetadataToolkit\Metadata\Exif;
 	use Fawno\MetadataToolkit\Metadata\IPTC;
+use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTag;
+use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagApplicationRecordVersion;
+	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagEnvelopeRecordVersion;
+	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagFileFormat;
+	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagFileVersion;
+	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 	use Fawno\MetadataToolkit\Metadata\JFIF;
 	use Fawno\MetadataToolkit\Metadata\SCCU;
 	use Fawno\MetadataToolkit\Metadata\XMP;
@@ -128,8 +133,8 @@
 			return null;
 		}
 
-		protected function addIPTC (?IPTC $iptc = null) : IPTC {
-			$segment = JPEGSegmentAPP13::create($iptc ?? IPTC::create());
+		protected function addIPTC (IPTCTag ...$tags) : IPTC {
+			$segment = JPEGSegmentAPP13::create(IRBTagIPTCData::create(...$tags));
 			$soi = array_shift($this->segments);
 			array_unshift($this->segments, $soi, $segment);
 
