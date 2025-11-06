@@ -14,11 +14,7 @@
 	use Fawno\MetadataToolkit\Format\JPEG\Segment\JPEGSegmentMetadata;
 	use Fawno\MetadataToolkit\Metadata\Exif;
 	use Fawno\MetadataToolkit\Metadata\IPTC;
-use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTag;
-use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagApplicationRecordVersion;
-	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagEnvelopeRecordVersion;
-	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagFileFormat;
-	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTagFileVersion;
+	use Fawno\MetadataToolkit\Metadata\IPTC\Tag\IPTCTag;
 	use Fawno\MetadataToolkit\Metadata\IRB\Tag\IRBTagIPTCData;
 	use Fawno\MetadataToolkit\Metadata\JFIF;
 	use Fawno\MetadataToolkit\Metadata\SCCU;
