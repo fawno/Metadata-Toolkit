@@ -64,6 +64,9 @@
 		}
 
 		public static function create (?string $data = null, bool $format = false) : XMP {
+			//x:xmpmeta (or x:xapmeta for older files) element
+			$data = preg_replace('~<x:xapmeta(.*)</x:xapmeta>~Uims', '<x:xmpmeta$1</x:xmpmeta>', $data);
+
 			return new static($data, $format);
 		}
 
@@ -74,7 +77,8 @@
 		 * @return null|XMP
 		 */
 		public static function readBlob (string $blob) : ?XMP {
-			if (!preg_match('~<x:xmpmeta.*</x:xmpmeta>~Uims', $blob, $xmps)) {
+			//x:xmpmeta (or x:xapmeta for older files) element
+			if (!preg_match('~<x:xmpmeta.*</x:xmpmeta>|<x:xapmeta.*</x:xapmeta>~Uims', $blob, $xmps)) {
 				return null;
 			}
 
