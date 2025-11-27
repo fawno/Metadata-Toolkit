@@ -52,11 +52,13 @@
 		}
 
 		public function __toString () {
+			$type = is_int($this->type) ? $this->type : $this->type->value;
+
 			// Pack tag name
 			$data = pack('Z*', $this->name);
 
 			// Pack tag value
-			$data .= match ($this->type) {
+			$data .= match ($type) {
 				SCCUType::UINT32BE => pack('Nx', $this->value),
 				SCCUType::ZSTRING => pack('Z*', $this->value),
 				SCCUType::ZTEXT => pack('Z*', $this->value),
@@ -65,14 +67,14 @@
 			};
 
 			// Padding to even length
-			$data = match ($this->type) {
+			$data = match ($type) {
 				SCCUType::ZSTRING => strlen($data) % 2 ? $data . "\x00" : $data,
 				SCCUType::ZTEXT => strlen($data) % 2 ? $data . "\x00" : $data,
 				default => $data,
 			};
 
 			$sccu = static::MAGIC;
-			$sccu .= pack('Nnx4', strlen($data) + 12, $this->type->value);
+			$sccu .= pack('Nnx4', strlen($data) + 12, $type);
 			$sccu .= $data;
 
 			return $sccu;
