@@ -58,7 +58,7 @@
 			$data = pack('Z*', $this->name);
 
 			// Pack tag value
-			$data .= match ($type) {
+			$data .= match ($this->type) {
 				SCCUType::UINT32BE => pack('Nx', $this->value),
 				SCCUType::ZSTRING => pack('Z*', $this->value),
 				SCCUType::ZTEXT => pack('Z*', $this->value),
@@ -67,7 +67,7 @@
 			};
 
 			// Padding to even length
-			$data = match ($type) {
+			$data = match ($this->type) {
 				SCCUType::ZSTRING => strlen($data) % 2 ? $data . "\x00" : $data,
 				SCCUType::ZTEXT => strlen($data) % 2 ? $data . "\x00" : $data,
 				default => $data,
