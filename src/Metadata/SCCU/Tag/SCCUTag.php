@@ -24,9 +24,10 @@
 
 			$value = match ($type) {
 				SCCUType::UINT32BE => current(unpack('N', $value)),
-				SCCUType::ZSTRING => current(unpack('Z*', $value)),
-				SCCUType::ZTEXT => current(unpack('Z*', $value)),
-				SCCUType::DATE => $value,
+				SCCUType::ZSTRING  => current(unpack('Z*', $value)),
+				SCCUType::ZSTRING2 => current(unpack('Z*', $value)),
+				SCCUType::ZTEXT    => current(unpack('Z*', $value)),
+				SCCUType::DATE     => $value,
 				default => $value,
 			};
 
@@ -60,16 +61,18 @@
 			// Pack tag value
 			$data .= match ($this->type) {
 				SCCUType::UINT32BE => pack('Nx', $this->value),
-				SCCUType::ZSTRING => pack('Z*', $this->value),
-				SCCUType::ZTEXT => pack('Z*', $this->value),
-				SCCUType::DATE => $this->value,
+				SCCUType::ZSTRING  => pack('Z*', $this->value),
+				SCCUType::ZSTRING2 => pack('Z*', $this->value),
+				SCCUType::ZTEXT    => pack('Z*', $this->value),
+				SCCUType::DATE     => $this->value,
 				default => $this->value,
 			};
 
 			// Padding to even length
 			$data = match ($this->type) {
-				SCCUType::ZSTRING => strlen($data) % 2 ? $data . "\x00" : $data,
-				SCCUType::ZTEXT => strlen($data) % 2 ? $data . "\x00" : $data,
+				SCCUType::ZSTRING  => strlen($data) % 2 ? $data . "\x00" : $data,
+				SCCUType::ZSTRING2 => strlen($data) % 2 ? $data . "\x00" : $data,
+				SCCUType::ZTEXT    => strlen($data) % 2 ? $data . "\x00" : $data,
 				default => $data,
 			};
 

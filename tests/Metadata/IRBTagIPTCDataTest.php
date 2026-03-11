@@ -30,7 +30,7 @@
 			$sccu->append(
 				SCCUTag::create('XXX', 'Routed To', SCCUType::ZSTRING),
 				SCCUTag::create(0, 'Resolution', SCCUType::UINT32BE),
-				SCCUTag::create("\r\nGlobal Times Today", 'Publication', SCCUType::ZTEXT),
+				SCCUTag::create("\r\nGlobal Times Today", 'Publication', SCCUType::ZSTRING2),
 				SCCUTag::create(36636212, 'UniqueID', SCCUType::UINT32BE),
 				SCCUTag::create("\r\n57", 'PageNo', SCCUType::ZSTRING),
 				SCCUTag::create("\r\n16/10/2025", 'Publication Dates', SCCUType::ZSTRING),

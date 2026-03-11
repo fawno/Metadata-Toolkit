@@ -7,6 +7,7 @@
 		/** Unsigned long (always 32 bit, big endian byte order) */
 		case UINT32BE = 0x0004;
 		case ZSTRING  = 0x000C;
+		case ZSTRING2 = 0x0016;
 		case DATE     = 0x0017;
 		case ZTEXT    = 0xFFFF;
 	}
