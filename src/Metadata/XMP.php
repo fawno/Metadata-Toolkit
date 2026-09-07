@@ -47,7 +47,9 @@
 			$this->dom->formatOutput = $format;
 			$this->dom->substituteEntities = false;
 
-			$this->dom->loadXML(trim((string) $data) ?: '<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" /></rdf:RDF></x:xmpmeta>');
+			$data = preg_replace('~[\x00-\x08\x0B\x0C\x0E-\x1F]~', '', trim((string) $data));
+
+			$this->dom->loadXML($data ?: '<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" /></rdf:RDF></x:xmpmeta>');
 			$this->dom->encoding = 'UTF-8';
 
 			if ('x:xmpmeta' !== $this->dom->documentElement->nodeName) {
